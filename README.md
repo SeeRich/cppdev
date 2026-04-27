@@ -1,1 +1,1 @@
-# C++ Docker Container Development with LLVM
+# C++ Docker Container Development with recent GCC + LLVM
