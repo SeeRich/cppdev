@@ -51,7 +51,7 @@ RUN apt update && apt install -y \
     flex \
     curl && \
     rm -rf /var/lib/apt/lists/*
-ARG GCC_VERSION="releases/gcc-16"
+ARG GCC_VERSION="releases/gcc-16.1.0"
 ARG GCC_MAJOR_VER="16"
 ADD https://github.com/gcc-mirror/gcc.git#${GCC_VERSION} /tmp/gcc-${GCC_VERSION}
 RUN cd /tmp/gcc-${GCC_VERSION} && \
