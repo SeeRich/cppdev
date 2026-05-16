@@ -90,7 +90,7 @@ RUN apt-get purge -y --auto-remove \
 ARG IWYU_VERSION=clang_22
 ADD https://github.com/include-what-you-use/include-what-you-use.git#${IWYU_VERSION} /tmp/include-what-you-use
 
-ARG LLVM_VERSION=22.1.4
+ARG LLVM_VERSION=22.1.5
 ADD https://github.com/llvm/llvm-project.git#llvmorg-${LLVM_VERSION} /tmp/llvm-project
 # SEE: https://github.com/dslm4515/CMLFS/issues/12
 # https://github.com/llvm/llvm-project/commit/e0184357fc781e939f4e4368fc8aff692ce227ed
