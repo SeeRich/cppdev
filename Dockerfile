@@ -1,4 +1,5 @@
-FROM ubuntu:24.04
+# syntax=docker/dockerfile:1
+FROM ubuntu:noble-20260410
 
 # TODO: CONVERT TO MULTI-STAGE BUILD
 
@@ -10,6 +11,8 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     binutils \
     binutils-dev \
     git \
+    curl \
+    unzip \
     zstd \
     bzip2 \
     autoconf \
@@ -24,7 +27,21 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
 RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 RUN python3 -m pip install -U pip && \
-    python3 -m pip install cmake==4.3.1 ninja==1.13.0 conan==2.27.1
+    python3 -m pip install cmake==4.3.2 conan==2.28.1
+
+# Install Ninja (pre-built, multi-arch)
+ARG TARGETARCH
+ARG NINJA_VERSION=1.13.2
+RUN case "${TARGETARCH}" in \
+      amd64) NINJA_ARCHIVE=ninja-linux.zip ;; \
+      arm64) NINJA_ARCHIVE=ninja-linux-aarch64.zip ;; \
+      *) echo "unsupported TARGETARCH=${TARGETARCH}" >&2; exit 1 ;; \
+    esac && \
+    curl -fsSL -o /tmp/ninja.zip \
+      "https://github.com/ninja-build/ninja/releases/download/v${NINJA_VERSION}/${NINJA_ARCHIVE}" && \
+    unzip -q /tmp/ninja.zip -d /tmp/ninja && \
+    install -m 0755 /tmp/ninja/ninja /usr/local/bin/ninja && \
+    rm -rf /tmp/ninja.zip /tmp/ninja
 
 # Build static zlib
 ARG ZLIB_VERSION=1.3.2
