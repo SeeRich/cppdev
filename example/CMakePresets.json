@@ -1,0 +1,67 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": { "major": 4, "minor": 0, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "RelWithDebInfo" }
+    },
+    {
+      "name": "gcc",
+      "displayName": "GCC + libstdc++",
+      "inherits": "base",
+      "cacheVariables": { "CMAKE_CXX_COMPILER": "g++" }
+    },
+    {
+      "name": "clang",
+      "displayName": "Clang + libc++",
+      "inherits": "base",
+      "cacheVariables": { "CMAKE_CXX_COMPILER": "clang++" }
+    },
+    {
+      "name": "clang-asan",
+      "displayName": "Clang + libc++ with ASan/UBSan",
+      "inherits": "clang",
+      "cacheVariables": { "CPP26_DEMO_SANITIZE": "ON" }
+    }
+  ],
+  "buildPresets": [
+    { "name": "gcc", "configurePreset": "gcc" },
+    { "name": "clang", "configurePreset": "clang" },
+    { "name": "clang-asan", "configurePreset": "clang-asan" }
+  ],
+  "testPresets": [
+    { "name": "gcc", "configurePreset": "gcc", "output": { "outputOnFailure": true } },
+    { "name": "clang", "configurePreset": "clang", "output": { "outputOnFailure": true } },
+    { "name": "clang-asan", "configurePreset": "clang-asan", "output": { "outputOnFailure": true } }
+  ],
+  "workflowPresets": [
+    {
+      "name": "gcc",
+      "steps": [
+        { "type": "configure", "name": "gcc" },
+        { "type": "build", "name": "gcc" },
+        { "type": "test", "name": "gcc" }
+      ]
+    },
+    {
+      "name": "clang",
+      "steps": [
+        { "type": "configure", "name": "clang" },
+        { "type": "build", "name": "clang" },
+        { "type": "test", "name": "clang" }
+      ]
+    },
+    {
+      "name": "clang-asan",
+      "steps": [
+        { "type": "configure", "name": "clang-asan" },
+        { "type": "build", "name": "clang-asan" },
+        { "type": "test", "name": "clang-asan" }
+      ]
+    }
+  ]
+}

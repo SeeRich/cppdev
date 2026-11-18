@@ -1,0 +1,4 @@
+# The Dockerfile fetches all sources itself; keep the build context tiny.
+.git
+build.log
+example/
